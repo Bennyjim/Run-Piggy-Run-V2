@@ -27,7 +27,6 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 `
 }
-let list: number[] = []
 sprites.onOverlap(SpriteKind.Player, SpriteKind.wolfOne, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     tiles.placeOnTile(Wolf_1, tiles.getTileLocation(23, 12))
@@ -69,10 +68,19 @@ function Create_Coins () {
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Coin))
     }
-    for (let Coin_1 of list) {
-    	
+    for (let Coin_1 of sprites.allOfKind(SpriteKind.Coin)) {
+        Coin_1.setPosition(Math.randomRange(0, 1000), Math.randomRange(0, 1000))
     }
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSprite) {
+    for (let Coin_1 of sprites.allOfKind(SpriteKind.Coin)) {
+        if (Coin_1.overlapsWith(Player_Main)) {
+            info.changeScoreBy(10)
+            Coin_1.destroy()
+            music.baDing.playUntilDone()
+        }
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Piggy4, function (sprite, otherSprite) {
     music.baDing.play()
     Piggy_4.destroy()
@@ -94,6 +102,7 @@ let Piggy_2: Sprite = null
 let Piggy_1: Sprite = null
 let Player_Main: Sprite = null
 game.splash("Welcome to Run Piggy Run! Try to rescue your brothers and collect the coins! Watch out for the Big Bad Wolf!")
+Create_Coins()
 tiles.placeOnTile(Player_Main, tiles.getTileLocation(7, 3))
 Player_Main = sprites.create(img`
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
