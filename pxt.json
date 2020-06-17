@@ -4,7 +4,8 @@
         "device": "*",
         "animation": "*",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.0.5",
-        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0"
+        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0",
+        "palette": "*"
     },
     "description": "",
     "files": [

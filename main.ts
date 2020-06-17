@@ -45,6 +45,27 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Piggy3, function (sprite, otherS
     info.changeScoreBy(50)
     Piggy_Score += -1
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSprite) {
+    for (let Coin_12 of sprites.allOfKind(SpriteKind.Coin)) {
+        if (Coin_12.overlapsWith(Player_Main)) {
+            info.changeScoreBy(10)
+            Coin_12.destroy()
+            music.baDing.playUntilDone()
+        }
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Piggy4, function (sprite, otherSprite) {
+    music.baDing.play()
+    Piggy_4.destroy()
+    info.changeScoreBy(50)
+    Piggy_Score += -1
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Piggy, function (sprite, otherSprite) {
+    music.baDing.play()
+    Piggy_1.destroy()
+    info.changeScoreBy(50)
+    Piggy_Score += -1
+})
 function Create_Coins () {
     Coin_NO = 50
     Coin_List = []
@@ -72,27 +93,6 @@ function Create_Coins () {
         Coin_1.setPosition(Math.randomRange(0, 1000), Math.randomRange(0, 1000))
     }
 }
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (sprite, otherSprite) {
-    for (let Coin_1 of sprites.allOfKind(SpriteKind.Coin)) {
-        if (Coin_1.overlapsWith(Player_Main)) {
-            info.changeScoreBy(10)
-            Coin_1.destroy()
-            music.baDing.playUntilDone()
-        }
-    }
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Piggy4, function (sprite, otherSprite) {
-    music.baDing.play()
-    Piggy_4.destroy()
-    info.changeScoreBy(50)
-    Piggy_Score += -1
-})
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Piggy, function (sprite, otherSprite) {
-    music.baDing.play()
-    Piggy_1.destroy()
-    info.changeScoreBy(50)
-    Piggy_Score += -1
-})
 let Coin_List: Sprite[] = []
 let Coin_NO = 0
 let Wolf_1: Sprite = null
@@ -105,22 +105,26 @@ game.splash("Welcome to Run Piggy Run! Try to rescue your brothers and collect t
 Create_Coins()
 tiles.placeOnTile(Player_Main, tiles.getTileLocation(7, 3))
 Player_Main = sprites.create(img`
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
-3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 
+. . 3 3 . . . . . . . 3 3 . . . 
+. 3 3 3 3 . . . . . 3 3 3 3 . . 
+. . 3 3 3 3 3 3 3 3 3 3 3 . . . 
+. . . 3 3 3 3 3 3 3 3 3 . . . . 
+. . . . 3 f 3 3 3 f 3 . . . . . 
+. . . 3 3 3 a 3 a 3 3 3 . . . . 
+. . . 3 f 3 3 3 3 3 3 3 . . . . 
+. . . 3 3 f f 3 3 3 3 3 . . . . 
+. . . . 3 3 3 3 3 3 3 . . . . . 
+. . . . 8 8 3 3 3 8 8 . . . . . 
+. . . . 3 8 3 3 3 8 3 . . . . . 
+. . . 3 3 8 8 8 8 8 3 3 . . . . 
+. . . 3 8 8 8 8 8 8 8 3 . . . . 
+. . . . 8 8 8 8 8 8 8 . . . . . 
+. . . . 8 8 8 8 8 8 8 . . . . . 
+. . . . 8 8 8 8 8 8 8 . . . . . 
+. . . . . 3 . . . 3 . . . . . . 
+. . . . . a . . . a . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
 controller.moveSprite(Player_Main, 100, 100)
 scene.cameraFollowSprite(Player_Main)
@@ -165,112 +169,136 @@ tiles.setTilemap(tiles.createTilemap(
             TileScale.Sixteen
         ))
 Piggy_1 = sprites.create(img`
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
-8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+. . . . . . . . . . . . . . . . 
+. . . 3 3 . . . . . . . 3 3 . . 
+. . 3 3 3 3 . . . . . 3 3 3 3 . 
+. . . 3 3 3 3 3 3 3 3 3 3 3 . . 
+. . . . 3 3 3 3 3 3 3 3 3 . . . 
+. . . . . 3 f 3 3 3 f 3 . . . . 
+. . . . 3 3 3 a 3 a 3 3 3 . . . 
+. . . . 3 f 3 3 3 3 3 3 3 . . . 
+. . . . 3 3 f f 3 3 3 3 3 . . . 
+. . . . . 3 3 3 3 3 3 3 . . . . 
+. . . . . 5 5 3 3 3 5 5 . . . . 
+. . . . . 3 5 3 3 3 5 3 . . . . 
+. . . . 3 3 5 5 5 5 5 3 3 . . . 
+. . . . 3 5 5 5 5 5 5 5 3 . . . 
+. . . . . 5 5 5 5 5 5 5 . . . . 
+. . . . . 5 5 5 5 5 5 5 . . . . 
+. . . . . 5 5 5 5 5 5 5 . . . . 
+. . . . . . 3 . . . 3 . . . . . 
+. . . . . . a . . . a . . . . . 
+. . . . . . . . . . . . . . . . 
 `, SpriteKind.Piggy)
 Piggy_2 = sprites.create(img`
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+. . . . . . . . . . . . . . . . 
+. . . 3 3 . . . . . . . 3 3 . . 
+. . 3 3 3 3 . . . . . 3 3 3 3 . 
+. . . 3 3 3 3 3 3 3 3 3 3 3 . . 
+. . . . 3 3 3 3 3 3 3 3 3 . . . 
+. . . . . 3 f 3 3 3 f 3 . . . . 
+. . . . 3 3 3 a 3 a 3 3 3 . . . 
+. . . . 3 f 3 3 3 3 3 3 3 . . . 
+. . . . 3 3 f f 3 3 3 3 3 . . . 
+. . . . . 3 3 3 3 3 3 3 . . . . 
+. . . . . 2 2 3 3 3 2 2 . . . . 
+. . . . . 3 2 3 3 3 2 3 . . . . 
+. . . . 3 3 2 2 2 2 2 3 3 . . . 
+. . . . 3 2 2 2 2 2 2 2 3 . . . 
+. . . . . 2 2 2 2 2 2 2 . . . . 
+. . . . . 2 2 2 2 2 2 2 . . . . 
+. . . . . 2 2 2 2 2 2 2 . . . . 
+. . . . . . 3 . . . 3 . . . . . 
+. . . . . . a . . . a . . . . . 
+. . . . . . . . . . . . . . . . 
 `, SpriteKind.Piggy2)
 Piggy_3 = sprites.create(img`
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
-7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
+. . . . . . . . . . . . . . . . 
+. . 3 3 . . . . . . . 3 3 . . . 
+. 3 3 3 3 . . . . . 3 3 3 3 . . 
+. . 3 3 3 3 3 3 3 3 3 3 3 . . . 
+. . . 3 3 3 3 3 3 3 3 3 . . . . 
+. . . . 3 f 3 3 3 f 3 . . . . . 
+. . . 3 3 3 a 3 a 3 3 3 . . . . 
+. . . 3 f 3 3 3 3 3 3 3 . . . . 
+. . . 3 3 f f 3 3 3 3 3 . . . . 
+. . . . 3 3 3 3 3 3 3 . . . . . 
+. . . . 7 7 3 3 3 7 7 . . . . . 
+. . . . 3 7 3 3 3 7 3 . . . . . 
+. . . 3 3 7 7 7 7 7 3 3 . . . . 
+. . . 3 7 7 7 7 7 7 7 3 . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . 7 7 7 7 7 7 7 . . . . . 
+. . . . . 3 . . . 3 . . . . . . 
+. . . . . a . . . a . . . . . . 
+. . . . . . . . . . . . . . . . 
 `, SpriteKind.Piggy3)
 Piggy_4 = sprites.create(img`
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
-9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 
+. . . . . . . . . . . . . . . . 
+. . . 3 3 . . . . . . . 3 3 . . 
+. . 3 3 3 3 . . . . . 3 3 3 3 . 
+. . . 3 3 3 3 3 3 3 3 3 3 3 . . 
+. . . . 3 3 3 3 3 3 3 3 3 . . . 
+. . . . . 3 f 3 3 3 f 3 . . . . 
+. . . . 3 3 3 a 3 a 3 3 3 . . . 
+. . . . 3 f 3 3 3 3 3 3 3 . . . 
+. . . . 3 3 f f 3 3 3 3 3 . . . 
+. . . . . 3 3 3 3 3 3 3 . . . . 
+. . . . . 6 6 3 3 3 6 6 . . . . 
+. . . . . 3 6 3 3 3 6 3 . . . . 
+. . . . 3 3 6 6 6 6 6 3 3 . . . 
+. . . . 3 6 6 6 6 6 6 6 3 . . . 
+. . . . . 6 6 6 6 6 6 6 . . . . 
+. . . . . 6 6 6 6 6 6 6 . . . . 
+. . . . . 6 6 6 6 6 6 6 . . . . 
+. . . . . . 3 . . . 3 . . . . . 
+. . . . . . a . . . a . . . . . 
+. . . . . . . . . . . . . . . . 
 `, SpriteKind.Piggy4)
 tiles.placeOnTile(Piggy_1, tiles.getTileLocation(0, 0))
 tiles.placeOnTile(Piggy_2, tiles.getTileLocation(46, 0))
 tiles.placeOnTile(Piggy_3, tiles.getTileLocation(0, 32))
 tiles.placeOnTile(Piggy_4, tiles.getTileLocation(46, 32))
 Wolf_1 = sprites.create(img`
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
-b b b b b b b b b b b b b b b b 
+. c . . . . . . . . . . . . c . 
+c c c . . . . . . . . . . c c c 
+c c c c . . . . . . . . c c c c 
+. c c c c c c c c c c c c c c . 
+. c c c c f c c c c f c c c c . 
+. c c c c c f c c f c c c c c . 
+. . c c c c f c c f c c c c . . 
+. . . c c c c c c c c c c . . . 
+. . . c c c c c c f c c c . . . 
+. . . c c c c c c c c c c . . . 
+. . . . c c c c c c c c . . . . 
+. . . . . . 2 c c 2 . . . . . . 
+. . . c c c 2 c c 2 c c c . . . 
+. . c c c c 2 c c 2 c c c c . . 
+. . c . c c 2 c c 2 c c . c . . 
+. . c . c c 2 c c 2 c c . c . . 
+. . f . 8 8 8 8 8 8 8 8 . f . . 
+. . . 8 8 8 8 8 8 8 8 8 8 . . . 
+. . . 8 8 8 8 8 8 8 8 8 8 . . . 
+. . . . 8 8 . . . . 8 8 . . . . 
+. . . . . c . . . . c . . . . . 
+. . . . . c . . . . c . . . . . 
+. . . . . c . . . . c . . . . . 
+. . . f f f . . . . f f f . . . 
 `, SpriteKind.wolfOne)
 Wolf_1.follow(Player_Main, 95)
 tiles.placeOnTile(Wolf_1, tiles.getTileLocation(23, 12))
 let Piggy_Score = 4
 info.setLife(3)
 game.onUpdateInterval(500, function () {
-    if (info.life() == 0) {
-        game.over(false)
-        game.reset()
+    if (Piggy_Score == 0) {
+        game.over(true)
     }
 })
 game.onUpdateInterval(500, function () {
-    if (Piggy_Score == 0) {
-        game.over(true)
+    if (info.life() == 0) {
+        game.over(false)
+        game.reset()
     }
 })
 forever(function () {
