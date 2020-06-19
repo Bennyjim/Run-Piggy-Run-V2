@@ -101,7 +101,7 @@ let Piggy_3: Sprite = null
 let Piggy_2: Sprite = null
 let Piggy_1: Sprite = null
 let Player_Main: Sprite = null
-game.splash("Welcome to Run Piggy Run! Try to rescue your brothers and collect the coins! Watch out for the Big Bad Wolf!")
+game.splash("Welcome to Run Piggy Run! Try to rescue your brothers and collect the coins! Watch out for the Big Bad Wolf! Use the arrow keys to move around.")
 Create_Coins()
 tiles.placeOnTile(Player_Main, tiles.getTileLocation(7, 3))
 Player_Main = sprites.create(img`
@@ -291,14 +291,14 @@ tiles.placeOnTile(Wolf_1, tiles.getTileLocation(23, 12))
 let Piggy_Score = 4
 info.setLife(3)
 game.onUpdateInterval(500, function () {
-    if (Piggy_Score == 0) {
-        game.over(true)
-    }
-})
-game.onUpdateInterval(500, function () {
     if (info.life() == 0) {
         game.over(false)
         game.reset()
+    }
+})
+game.onUpdateInterval(500, function () {
+    if (Piggy_Score == 0) {
+        game.over(true)
     }
 })
 forever(function () {
